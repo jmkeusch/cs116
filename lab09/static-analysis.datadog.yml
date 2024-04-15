@@ -1,0 +1,55 @@
+# This is a "v1" configuration file.
+schema-version: v1
+# The list of rulesets to enable for this repository.
+rulesets:
+  # Enable the `python-inclusive` ruleset with the default configuration.
+  - python-inclusive
+  - csharp-best-practices
+  - csharp-security
+  - java-security
+  - javascript-best-practices
+  - python-django
+  - tsx-react
+  # Enable the `python-best-practices` ruleset with a custom configuration.
+  - python-best-practices:
+    # Do not apply any of the rules in this ruleset to files that match `src/**/*.generated.py`.
+    ignore:
+      - src/**/*.generated.py
+    rules:
+      # Special configuration for the `python-best-practices/no-generic-exception` rule.
+      no-generic-exception:
+        # Treat violations of this rule as errors (normally "notice").
+        severity: ERROR
+        # Classify violations of this rule under the "code style" category.
+        category: CODE_STYLE
+        # Only apply this rule to files under the `src/new-code` subtree.
+        only:
+          - src/new-code
+  # Enable the `python-code-style ruleset` with a custom configuration.
+  - python-code-style:
+    rules:
+      max-function-lines:
+        # Set arguments for the `python-code-style/max-function-lines` rule.
+        arguments:
+          # Set the `max-lines` argument to 150 in the whole repository.
+          max-lines: 150
+      max-class-lines:
+        # Set arguments for the `python-code-style/max-class-lines` rule.
+        arguments:
+          # Set different values for the `max-lines` argument in different subtrees.
+          max-lines:
+            # Set the `max-lines` argument to 100 by default
+            /: 100
+            # Set the `max-lines` argument to 75 under the `src/new-code` subtree.
+            src/new-code: 75
+# Analyze only files in the `src` and `imported` subtrees.
+only:
+  - src
+  - imported
+# Do not analyze any files in the `src/tests` subtree.
+ignore:
+  - src/tests
+# Do not add the content of the `.gitignore` file to the `ignore` list.
+ignore-gitignore: true
+# Do not analyze files larger than 100 kB.
+max-file-size-kb: 100
